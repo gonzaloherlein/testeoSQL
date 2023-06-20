@@ -63,7 +63,7 @@ from producto;
 -- Listar la descripción de productos en estado 'en stock' que tiene la empresa.
 select p.descripcion
 from producto p
-where estado = 'en stock';
+where estado = 'en stock'; 
 
 -- Consulta 3
 -- Listar los productos que nunca fueron vendidos.
@@ -98,9 +98,11 @@ from detalle_venta dv join venta v on dv.nro_factura = v.nro_factura
 group by cl.nombre;
 
 -- Consulta 7
--- Listar la descripción de aquellos productos en estado ‘sin stock’ que se hayan vendido en el mes de Enero de 2015
+-- Listar la descripción de aquellos productos en estado ‘sin stock’ que se hayan vendido en el mes de Enero de 2015 
 select p.descripcion
 from producto p join detalle_venta dv on p.id_producto = dv.id_producto
 				join venta vt on vt.nro_factura = dv.nro_factura
 where p.estado = 'sin stock' and year(vt.fecha) = 2015 and month(vt.fecha) = 1;
+
+-- No esta terminado
 
