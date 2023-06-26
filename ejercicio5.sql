@@ -57,6 +57,13 @@ values
 	(1,1,12,20230626,12,120000),
     (2,1,13,20230626,12,120000),
     (3,1,14,20230626,12,120000);
+insert into viaje (nro_chofer,nro_cliente,patente,fecha,km_totales,tiempo_espera) values (2,2,12,20230626,12,120000);
+insert into viaje (nro_chofer,nro_cliente,patente,fecha,km_totales,tiempo_espera) values (3,3,12,20230626,13,120000);
+insert into viaje (nro_chofer,nro_cliente,patente,fecha,km_totales,tiempo_espera) values (3,1,12,20230626,13,120000);
+    
+update viaje 
+set patente = 15
+where nro_chofer = 3;
 
 select * from viaje;
 
@@ -84,4 +91,34 @@ from chofer c join viaje v on c.nro_chofer = v.nro_chofer
 where not exists(select a.patente
 from auto a
 where a.patente = v.patente and a.año >= 2010);
+
+-- Consulta 4
+-- Listar los kilómetros realizados en viajes por cada auto (patente y modelo)
+select v.km_totales, a.patente, a.modelo
+from viaje v join auto a on v.patente = a.patente;
+
+-- Consulta 5
+-- Mostrar el costo promedio de los viajes realizados por cada auto (patente), para viajes de clientes de la localidad de Ramos Mejía.
+select avg(v.km_totales * 100) as 'Costo promedio', a.patente
+from viaje v join auto a on v.patente = a.patente join cliente c on v.nro_cliente = c.nro_cliente
+where c.localidad like "Ramos Mejía"
+group by a.patente;
+
+-- Consulta 6
+-- Listar el costo total de los viajes realizados por cada chofer (número y nombre) cuyo nombre comienza con la letra A.
+select sum(v.km_totales * 100) as 'Costo total', c.telefono, c.nombre
+from viaje v join chofer c on v.nro_chofer = c.nro_chofer
+where c.nombre like "A%"
+group by c.telefono, c.nombre;
+
+-- Consulta 7 
+-- Mostrar la fecha de ingreso, el nombre del chofer y nombre de cliente, que hayan realizado el viaje más largo de la historia.
+select c.fecha_ingreso, c.nombre, cl.nombre, v.km_totales
+from viaje v join chofer c on v.nro_chofer = c.nro_chofer join cliente cl on cl.nro_cliente = v.nro_cliente
+where v.km_totales = (select max(km_totales) from viaje) 
+limit 1;
+
+
+
+
 
